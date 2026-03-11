@@ -2,6 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 
+const ScrollToTop = () => {
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
+    return null;
+};
+
 const Breadcrumbs = () => {
     const { t } = useLanguage();
     const location = useLocation();
@@ -31,7 +41,7 @@ const Breadcrumbs = () => {
 };
 
 const Header = () => {
-    const { t, language, setLanguage } = useLanguage();
+    const { t } = useLanguage();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const location = useLocation();
 
@@ -43,47 +53,28 @@ const Header = () => {
     return (
         <>
             {/* Top Utility Bar */}
-            <header className="top-bar">
-                <div className="container">
-                    <div className="top-bar-links">
-                        <a href="#">{t('top_intranet')}</a>
-                        <a href="#">{t('top_library')}</a>
-                        <Link to="/contacto">{t('nav_contact')}</Link>
-                    </div>
-                    <div className="transparency-buttons">
-                        <div className="dropdown">
-                            <button className="btn-transparency btn-pte">
-                                <span style={{ fontSize: '1.2rem' }}>🌐</span> {t('top_transparency')} ▼
-                            </button>
-                            <div className="dropdown-content">
-                                <Link to="/transparencia/documentos">Documentos de Interés</Link>
-                                <a href="https://www.transparencia.gob.pe/" target="_blank" rel="noopener noreferrer">Portal de Transparencia (Externo)</a>
-                                <Link to="/transparencia/pte">PTE - Estándar</Link>
-                                <Link to="/transparencia/rendicion">Rendición de Cuentas</Link>
-                            </div>
-                        </div>
+            <div className="top-utility-bar" style={{ backgroundColor: '#00264d', color: '#fff', fontSize: '0.75rem', fontWeight: '500', padding: '6px 20px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
 
-                        {/* Language Selector */}
-                        <div className="dropdown" style={{ marginLeft: '12px' }}>
-                            <button className="btn-lang-selector">
-                                <img src="/lang_icon.svg" alt="Lang" className="icon-lang" />
-                                <span>{language === 'es' ? 'ESPAÑOL' : 'ENGLISH'}</span>
-                                <span className="arrow-down">▼</span>
-                            </button>
-                            <div className="dropdown-content">
-                                <a onClick={() => setLanguage('es')} className={language === 'es' ? 'active-lang' : ''}>
-                                    {language === 'es' ? '✓ ' : ''}Español
-                                </a>
-                                <a onClick={() => setLanguage('en')} className={language === 'en' ? 'active-lang' : ''}>
-                                    {language === 'en' ? '✓ ' : ''}English
-                                </a>
-                            </div>
-                        </div>
+                    {/* Left Side: Address & Email */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
+                        <a href="https://maps.google.com/?q=Jr.+Bolognesi+765+-+Yunguyo" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '6px', textDecoration: 'none', color: '#fff', opacity: 0.9, transition: 'opacity 0.2s' }} onMouseEnter={e => e.currentTarget.style.opacity = '1'} onMouseLeave={e => e.currentTarget.style.opacity = '0.9'}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> Jr. Bolognesi 765 - Yunguyo
+                        </a>
+                        <a href="mailto:info@unfay.edu.pe" style={{ display: 'flex', alignItems: 'center', gap: '6px', textDecoration: 'none', color: '#fff', opacity: 0.9, transition: 'opacity 0.2s' }} onMouseEnter={e => e.currentTarget.style.opacity = '1'} onMouseLeave={e => e.currentTarget.style.opacity = '0.9'}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg> info@unfay.edu.pe
+                        </a>
                     </div>
+
+                    {/* Right Side: Transparency & Language */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                        <a href="https://www.transparencia.gob.pe" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', transition: 'all 0.2s', opacity: 0.85 }} onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.opacity = '1' }} onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.opacity = '0.85' }}>
+                            <img src="/logo_pte.png" alt="Portal de Transparencia Estándar" style={{ height: '32px', objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
+                        </a>
+                    </div>
+
                 </div>
-            </header>
-
-            {/* Brand Bar */}
+            </div>            {/* Brand Bar */}
             <header className="brand-header">
                 <div className="container">
                     <Link to="/" className="logo-container">
@@ -98,12 +89,7 @@ const Header = () => {
                     </Link>
 
                     <div className="header-actions">
-                        <div className="search-box">
-                            <input type="text" placeholder={t('search_placeholder')} />
-                            <button type="submit">
-                                <img src="/search_icon.svg" alt="Buscar" style={{ width: '16px', height: '16px', filter: 'brightness(0) invert(1)' }} />
-                            </button>
-                        </div>
+
 
                         {/* Hamburger Button */}
                         <button
@@ -123,14 +109,22 @@ const Header = () => {
             <nav className={`main-nav ${isMenuOpen ? 'mobile-open' : ''}`}>
                 <div className="container">
                     <ul id="main-menu">
-                        <li><NavLink to="/" end className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>{t('nav_home')}</NavLink></li>
-                        <li><NavLink to="/universidad" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>{t('nav_institutional')}</NavLink></li>
-                        <li><NavLink to="/autoridades" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>{t('nav_authorities')}</NavLink></li>
-                        <li><NavLink to="/admision" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>{t('nav_admission')}</NavLink></li>
-                        <li><NavLink to="/investigacion" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>{t('nav_research')}</NavLink></li>
-                        <li><NavLink to="/convocatorias" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>{t('nav_calls')}</NavLink></li>
-                        <li><NavLink to="/noticias" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>{t('nav_news')}</NavLink></li>
-                        <li><NavLink to="/contacto" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>{t('nav_contact')}</NavLink></li>
+                        <li><NavLink to="/" end className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>Inicio</NavLink></li>
+                        <li><NavLink to="/universidad" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>Institucional</NavLink></li>
+                        <li><NavLink to="/autoridades" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>Autoridades</NavLink></li>
+                        <li><NavLink to="/carreras" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>Carreras Profesionales</NavLink></li>
+                        <li><NavLink to="/noticias" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>Noticias y Eventos</NavLink></li>
+                        <li><NavLink to="/convocatorias" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>Convocatorias</NavLink></li>
+                        <li className="nav-dropdown">
+                            <NavLink to="/documentos" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+                                Documentos <span style={{ fontSize: '0.7rem', marginLeft: '5px' }}>▼</span>
+                            </NavLink>
+                            <ul className="dropdown-menu">
+                                <li><Link to="/documentos" className="dropdown-link">Documentos de Gestión</Link></li>
+                                <li><Link to="/resoluciones" className="dropdown-link">Resoluciones</Link></li>
+                            </ul>
+                        </li>
+                        <li><NavLink to="/contacto" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>Contacto</NavLink></li>
                     </ul>
                 </div>
             </nav>
@@ -148,51 +142,67 @@ const Footer = () => {
         <footer className="footer-main">
             <div className="container">
                 <div className="footer-top-grid">
-                    <div className="footer-brand-col">
-                        <div className="footer-logo-wrapper">
-                            <img src="/logo_unfay.png" alt="Logo UNFAY Footer" className="footer-logo" />
+                    <div className="footer-brand-col" style={{ alignItems: 'flex-start' }}>
+                        <div className="footer-logo-wrapper" style={{ justifyContent: 'flex-start', marginBottom: '15px' }}>
+                            <img src="/logo_unfay.png" alt="Logo UNFAY Footer" className="footer-logo" style={{ filter: 'brightness(0) invert(1)', width: '120px', height: 'auto', objectFit: 'contain' }} />
                         </div>
-                        <div className="footer-brand-text" style={{ textAlign: 'center' }}>
-                            <h4 style={{ fontSize: '1.4rem' }}>UNFAY</h4>
-                            <p>{t('ley_text')}</p>
+                        <div className="footer-brand-text" style={{ textAlign: 'left', marginBottom: '20px' }}>
+                            <h4 style={{ fontSize: '1.2rem', margin: '0 0 5px 0' }}>Universidad Nacional Fronteriza<br />Autónoma de Yunguyo</h4>
                         </div>
-                        <div className="footer-social" style={{ justifyContent: 'center' }}>
+                        <div className="footer-social" style={{ justifyContent: 'flex-start', marginTop: '0' }}>
                             <a href="https://www.facebook.com/unfay" target="_blank" rel="noopener noreferrer" className="social-icon">
-                                <img src="/facebook_icon.svg" alt="Facebook" style={{ width: '20px', height: '20px', filter: 'brightness(0) invert(1)' }} />
+                                <img src="/facebook_icon.svg" alt="Facebook" style={{ width: '18px', height: '18px', filter: 'brightness(0) invert(1)' }} />
                             </a>
                             <a href="https://www.youtube.com/@unfay" target="_blank" rel="noopener noreferrer" className="social-icon">
-                                <img src="/youtube_icon.svg" alt="Youtube" style={{ width: '20px', height: '20px', filter: 'brightness(0) invert(1)' }} />
+                                <img src="/youtube_icon.svg" alt="Youtube" style={{ width: '18px', height: '18px', filter: 'brightness(0) invert(1)' }} />
                             </a>
                         </div>
                     </div>
 
-                    <div className="footer-nav-col">
-                        <h4>{t('footer_contact')}</h4>
+                    <div className="footer-nav-col footer-contact-info">
+                        <h4>{t('footer_contact')} <span className="title-dash">—</span></h4>
                         <ul>
-                            <li><span className="footer-icon">📍</span> Jr. Bolognesi 765 - Yunguyo</li>
-                            <li><span className="footer-icon">📧</span> mesadepartes@unfay.edu.pe</li>
-                            <li><span className="footer-icon">📞</span> +51 051 123456</li>
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="footer-icon-svg"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                <span>Jr. Bolognesi 765 - Yunguyo</span>
+                            </li>
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="footer-icon-svg"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                                <span>mesadepartes@unfay.edu.pe</span>
+                            </li>
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="footer-icon-svg"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                <span>+51 051 123456</span>
+                            </li>
                         </ul>
                     </div>
 
                     <div className="footer-nav-col">
-                        <h4>{t('footer_links')}</h4>
+                        <h4>LA UNIVERSIDAD <span className="title-dash">—</span></h4>
                         <ul>
-                            <li><Link to="/admision">{t('nav_admission')}</Link></li>
-                            <li><Link to="/transparencia">{t('top_transparency')}</Link></li>
-                            <li><Link to="/convocatorias">{t('nav_calls')}</Link></li>
-                            <li><Link to="/contacto">{t('nav_contact')}</Link></li>
+                            <li><Link to="/universidad" className="footer-link">Institucional</Link></li>
+                            <li><Link to="/autoridades" className="footer-link">Autoridades</Link></li>
+                            <li><Link to="/carreras" className="footer-link">Carreras Profesionales</Link></li>
+                            <li><Link to="/documentos" className="footer-link">Documentos</Link></li>
+                            <li><Link to="/convocatorias" className="footer-link">Convocatorias</Link></li>
                         </ul>
                     </div>
 
                     <div className="footer-nav-col">
-                        <h4>{t('footer_platforms')}</h4>
-                        <ul>
-                            <li><a href="#">SIA - Sistema Académico</a></li>
-                            <li><a href="#">Campus Virtual</a></li>
-                            <li><a href="#">Correo Institucional</a></li>
-                            <li><a href="#">Repositorio Digital</a></li>
-                        </ul>
+                        <h4>FANPAGE <span className="title-dash" style={{ color: '#00ccff' }}>⤵</span></h4>
+                        <div style={{ backgroundColor: '#fff', padding: '5px', borderRadius: '4px', display: 'inline-block' }}>
+                            <iframe
+                                src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FMINEDUPeru&tabs=&width=250&height=200&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
+                                width="250"
+                                height="200"
+                                style={{ border: 'none', overflow: 'hidden' }}
+                                scrolling="no"
+                                frameBorder="0"
+                                allowFullScreen={true}
+                                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                                title="Facebook Page Content"
+                            ></iframe>
+                        </div>
                     </div>
                 </div>
 
@@ -205,13 +215,14 @@ const Footer = () => {
                     </div>
                 </div>
             </div>
-        </footer>
+        </footer >
     );
 };
 
 const Layout = ({ children }) => {
     return (
         <div className="site-wrapper">
+            <ScrollToTop />
             <Header />
             <Breadcrumbs />
             <main id="app">

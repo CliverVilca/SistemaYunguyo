@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 
 const Investigacion = () => {
     const { t, language } = useLanguage();
+    const [openIndex, setOpenIndex] = useState(0);
+
     const lineasInvestigacion = [
         {
             titulo: language === 'es' ? "Recursos Naturales y Medio Ambiente" : "Natural Resources and Environment",
@@ -18,84 +20,150 @@ const Investigacion = () => {
         }
     ];
 
-    return (
-        <div className="container" style={{ paddingBottom: '30px' }}>
-            <section style={{ paddingTop: '15px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '20px', borderBottom: '1px solid #eee', paddingBottom: '10px' }}>
-                    <div>
-                        <h2 className="section-title" style={{ margin: 0, textAlign: 'left', fontSize: '1.4rem' }}>{t('page_research_title')}</h2>
-                        <p style={{ color: '#666', fontSize: '0.8rem', margin: '5px 0 0' }}>
-                            {language === 'es' ?
-                                'Impulsando el conocimiento científico en la frontera.' :
-                                'Driving scientific knowledge at the border.'}
-                        </p>
-                    </div>
-                </div>
+    const reglamentos = [
+        {
+            titulo: "REGLAMENTO PARA LA GESTIÓN DE LOS PROYECTOS DE INVESTIGACIÓN",
+            fechaCorta: "Abril 5, 2024",
+            fechaCompleta: "Vie, 05/04/2024 - 12:00",
+            archivos: [
+                { nombre: "REGLAMENTO DE GESTIÓN DE PROYECTOS", size: "1.73 MB", type: "pdf" }
+            ]
+        },
+        {
+            titulo: "REGLAMENTO DE PROPIEDAD INTELECTUAL",
+            fechaCorta: "Marzo 15, 2024",
+            fechaCompleta: "Lun, 15/03/2024 - 09:30",
+            archivos: [
+                { nombre: "REGLAMENTO DE PROPIEDAD INTELECTUAL", size: "2.1 MB", type: "pdf" }
+            ]
+        },
+        {
+            titulo: "CÓDIGO DE ÉTICA PARA LA INVESTIGACIÓN",
+            fechaCorta: "Enero 20, 2024",
+            fechaCompleta: "Sáb, 20/01/2024 - 10:00",
+            archivos: [
+                { nombre: "CÓDIGO DE ÉTICA UNFAY", size: "0.85 MB", type: "pdf" }
+            ]
+        }
+    ];
 
-                <div className="card-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
-                    {lineasInvestigacion.map((linea, index) => (
-                        <div className="card" key={index} style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            border: '1px solid #eee',
-                            boxShadow: '0 4px 12px rgba(0,0,0,0.03)',
-                            borderRadius: '10px',
-                            overflow: 'hidden'
+    const toggleAccordion = (index) => {
+        setOpenIndex(openIndex === index ? -1 : index);
+    };
+
+    return (
+        <div className="container" style={{ padding: '40px 0' }}>
+            {/* Header de Investigación */}
+            <div style={{ marginBottom: '40px' }}>
+                <h2 className="section-title" style={{ textAlign: 'left', marginBottom: '10px' }}>{t('page_research_title')}</h2>
+                <p style={{ color: '#666', fontSize: '1.1rem' }}>
+                    Impulsando el conocimiento científico y la innovación tecnológica desde el Altiplano.
+                </p>
+            </div>
+
+            {/* Líneas de Investigación */}
+            <h3 style={{ borderLeft: '4px solid #004a80', paddingLeft: '15px', color: '#003f6f', marginBottom: '25px' }}>
+                {language === 'es' ? 'Líneas de Investigación Prioritarias' : 'Priority Research Lines'}
+            </h3>
+            <div className="card-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px', marginBottom: '60px' }}>
+                {lineasInvestigacion.map((linea, index) => (
+                    <div className="card" key={index} style={{ boxShadow: '0 10px 25px rgba(0,0,0,0.05)', border: '1px solid #eee' }}>
+                        <div style={{ height: '180px', overflow: 'hidden' }}>
+                            <img src={`/investigacion_${index + 1}.jpg`} alt={linea.titulo} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        </div>
+                        <div className="card-body" style={{ padding: '25px' }}>
+                            <h4 style={{ color: '#003f6f', fontSize: '1.2rem', marginBottom: '12px' }}>{linea.titulo}</h4>
+                            <p style={{ color: '#666', fontSize: '0.9rem', lineHeight: '1.6' }}>{linea.descripcion}</p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {/* Sección de Normatividad (Acordeón estilo solicitado) */}
+            <div className="normatividad-section">
+                <h3 style={{ borderLeft: '4px solid #004a80', paddingLeft: '15px', color: '#003f6f', marginBottom: '25px' }}>
+                    {language === 'es' ? 'Normatividad y Reglamentos' : 'Regulations and Policies'}
+                </h3>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                    {reglamentos.map((reg, idx) => (
+                        <div key={idx} style={{
+                            borderRadius: '8px',
+                            overflow: 'hidden',
+                            border: '1px solid #d1e3f8',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
                         }}>
-                            <div style={{ height: '140px', overflow: 'hidden' }}>
-                                <img
-                                    src={`/investigacion_${index + 1}.jpg`}
-                                    alt={linea.titulo}
-                                    style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.3s' }}
-                                />
-                            </div>
-                            <div className="card-body" style={{ padding: '15px', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                                <span style={{ color: '#005a9c', fontWeight: '700', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                                    {t('nav_research')}
+                            {/* Barra de Título del Acordeón */}
+                            <button
+                                onClick={() => toggleAccordion(idx)}
+                                style={{
+                                    width: '100%',
+                                    textAlign: 'left',
+                                    padding: '15px 25px',
+                                    background: openIndex === idx ? '#eef6ff' : '#f8fbff',
+                                    color: '#004a80',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    fontSize: '0.9rem',
+                                    fontWeight: '600',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.5px',
+                                    transition: 'all 0.3s ease'
+                                }}
+                            >
+                                {reg.titulo}
+                                <span style={{ transform: openIndex === idx ? 'rotate(180deg)' : 'rotate(0)', transition: '0.3s' }}>
+                                    {openIndex === idx ? '▲' : '▼'}
                                 </span>
-                                <h3 style={{ marginTop: '8px', fontSize: '1rem', color: '#333', fontWeight: '700', lineHeight: '1.3' }}>
-                                    {linea.titulo}
-                                </h3>
-                                <p style={{ fontSize: '0.82rem', color: '#666', margin: '10px 0', flexGrow: 1, lineHeight: '1.4' }}>
-                                    {linea.descripcion}
-                                </p>
-                                <a href="#" className="btn-more" style={{ fontSize: '0.75rem', fontWeight: '700', color: '#004a80', marginTop: 'auto' }}>
-                                    {language === 'es' ? 'VER PROYECTOS ➔' : 'VIEW PROJECTS ➔'}
-                                </a>
-                            </div>
+                            </button>
+
+                            {/* Contenido Desplegable */}
+                            {openIndex === idx && (
+                                <div style={{
+                                    padding: '30px 40px',
+                                    background: 'white',
+                                    animation: 'slideDown 0.3s ease-out'
+                                }}>
+                                    <h4 style={{ color: '#444', fontSize: '1.4rem', fontWeight: '800', marginBottom: '15px', textTransform: 'uppercase' }}>
+                                        {reg.titulo}
+                                    </h4>
+
+                                    <p style={{ color: '#666', margin: '0 0 20px', fontSize: '0.9rem' }}>
+                                        Fecha: <span style={{ color: '#333', fontWeight: '500' }}>{reg.fechaCorta}</span>
+                                    </p>
+
+                                    <div style={{ marginBottom: '25px' }}>
+                                        <h5 style={{ color: '#004a80', fontSize: '0.85rem', fontWeight: '700', letterSpacing: '1px', marginBottom: '10px' }}>DOCUMENTOS</h5>
+                                        {reg.archivos.map((file, fidx) => (
+                                            <div key={fidx} style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#005bb7', fontWeight: '500', fontSize: '0.95rem' }}>
+                                                <img src="/pdf_icon.svg" style={{ width: '18px' }} alt="PDF" />
+                                                <a href="#" style={{ color: 'inherit', textDecoration: 'none', borderBottom: '1px solid transparent' }}>
+                                                    {file.nombre} ({file.size})
+                                                </a>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div>
+                                        <h5 style={{ color: '#004a80', fontSize: '0.85rem', fontWeight: '700', letterSpacing: '1px', marginBottom: '5px' }}>FECHA DE PUBLICACIÓN</h5>
+                                        <p style={{ color: '#555', margin: 0, fontSize: '0.95rem' }}>{reg.fechaCompleta}</p>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>
+            </div>
 
-                <div className="convocatoria-card" style={{
-                    marginTop: '40px',
-                    padding: '25px',
-                    background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
-                    borderRadius: '12px',
-                    borderLeft: '5px solid #004a80',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'flex-start'
-                }}>
-                    <h3 style={{ color: '#004a80', marginBottom: '10px', fontSize: '1.2rem' }}>
-                        {language === 'es' ? 'Repositorio Institucional' : 'Institutional Repository'}
-                    </h3>
-                    <p style={{ margin: 0, fontSize: '0.85rem', color: '#555', maxWidth: '700px' }}>
-                        {language === 'es' ?
-                            'Próximamente acceso a tesis, artículos científicos y publicaciones de la comunidad universitaria.' :
-                            'Coming soon: access to theses, scientific articles, and publications from the university community.'}
-                    </p>
-                    <button className="btn-blue" style={{
-                        marginTop: '15px',
-                        padding: '10px 20px',
-                        fontSize: '0.8rem',
-                        borderRadius: '6px',
-                        cursor: 'pointer'
-                    }}>
-                        {language === 'es' ? 'Explorar Repositorio' : 'Explore Repository'}
-                    </button>
-                </div>
-            </section>
+            <style>{`
+                @keyframes slideDown {
+                    from { opacity: 0; transform: translateY(-10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+            `}</style>
         </div>
     );
 };

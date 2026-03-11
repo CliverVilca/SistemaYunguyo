@@ -2,71 +2,78 @@ import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 
 const DocumentosInteres = () => {
-    const { t, language } = useLanguage();
+    const { language } = useLanguage();
 
     const documentos = [
         {
-            nombre: language === 'es' ? "Estatuto Universitario" : "University Statutes",
-            descripcion: language === 'es' ? "Normas fundamentales del funcionamiento de la UNFAY." : "Fundamental rules for UNFAY's operation.",
-            formato: "PDF",
-            fecha: "2024"
+            id: 1,
+            titulo: "Cuadro multianual de necesidades",
+            link: "#"
         },
         {
-            nombre: "TUPA 2026",
-            descripcion: language === 'es' ? "Texto Único de Procedimientos Administrativos." : "Single Text of Administrative Procedures.",
-            formato: "PDF",
-            fecha: "2026"
-        },
-        {
-            nombre: language === 'es' ? "Plan Estratégico Institucional" : "Institutional Strategic Plan",
-            descripcion: language === 'es' ? "Objetivos y metas para el desarrollo de la universidad." : "Goals and targets for the university's development.",
-            formato: "PDF",
-            fecha: "2025"
+            id: 2,
+            titulo: "Primera modificación del cuadro multianual de necesidades",
+            link: "#"
         }
     ];
 
     return (
-        <div className="container" style={{ padding: '20px 0' }}>
-            <section style={{ marginBottom: '50px' }}>
-                <h2 className="section-title" style={{ borderLeft: '5px solid #004a80', paddingLeft: '15px' }}>
-                    {language === 'es' ? 'Documentos de Interés' : 'Documents of Interest'}
-                </h2>
-                <p style={{ color: '#666', marginBottom: '25px', fontSize: '0.9rem' }}>
-                    {language === 'es' ?
-                        'Accede a los principales documentos normativos y de gestión de la UNFAY.' :
-                        'Access the main regulatory and management documents of UNFAY.'}
-                </p>
+        <div style={{
+            backgroundColor: '#ffffff',
+            minHeight: '100vh',
+            backgroundImage: 'radial-gradient(#0041700a 1px, transparent 0)',
+            backgroundSize: '24px 24px'
+        }}>
+            <div className="container" style={{ padding: '20px 0 40px' }}>
+                <div style={{ marginBottom: '35px' }}>
+                    <h2 style={{
+                        fontSize: '1.4rem',
+                        color: '#333',
+                        fontWeight: '600',
+                        lineHeight: '1.4',
+                        marginBottom: '40px'
+                    }}>
+                        Documentos de interes publico emitido por la Universidad Nacional Fronteriza Autonoma de Yunguyo
+                    </h2>
 
-                <div className="convocatoria-card">
-                    <div className="table-responsive">
-                        <table className="unfay-table">
-                            <thead>
-                                <tr>
-                                    <th>{t('description')}</th>
-                                    <th>{language === 'es' ? 'Año' : 'Year'}</th>
-                                    <th>{t('process')}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {documentos.map((doc, idx) => (
-                                    <tr key={idx}>
-                                        <td>
-                                            <div className="font-bold-table">{doc.nombre}</div>
-                                            <div style={{ fontSize: '0.75rem', color: '#888' }}>{doc.descripcion}</div>
-                                        </td>
-                                        <td>{doc.fecha}</td>
-                                        <td>
-                                            <button className="btn-download btn-red">
-                                                <span style={{ fontSize: '1rem' }}>📥</span> {doc.formato}
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
+                        {documentos.map((doc) => (
+                            <div key={doc.id} style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                gap: '20px',
+                                paddingRight: '10%'
+                            }}>
+                                <span style={{
+                                    fontSize: '1.2rem',
+                                    color: '#444',
+                                    fontWeight: '500'
+                                }}>
+                                    {doc.titulo}
+                                </span>
+
+                                <button style={{
+                                    backgroundColor: '#2c3e50',
+                                    color: 'white',
+                                    padding: '12px 25px',
+                                    borderRadius: '8px',
+                                    border: '3px solid #c62828',
+                                    fontWeight: '750',
+                                    fontSize: '1rem',
+                                    cursor: 'pointer',
+                                    boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
+                                    transition: 'transform 0.2s ease',
+                                    whiteSpace: 'nowrap'
+                                }} onMouseOver={e => e.currentTarget.style.transform = 'scale(1.03)'}
+                                    onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
+                                    Descargar PDF
+                                </button>
+                            </div>
+                        ))}
                     </div>
                 </div>
-            </section>
+            </div>
         </div>
     );
 };
